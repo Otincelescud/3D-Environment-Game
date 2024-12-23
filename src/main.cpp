@@ -4,7 +4,7 @@
 int main(int argc, char *argv[]) {
     Game *game = new Game;
 
-    game->init("3DEnv", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false);
+    game->init("3DEnv", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 500, false);
     while (game->isRunning()) {
         game->handleEvents();
         game->update();
