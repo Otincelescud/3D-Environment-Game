@@ -44,7 +44,7 @@ template<int N> float Vector<N>::dot(const Vector<N>& other) const {
 }
 template<int N> float Vector<N>::norm() const {
 	float sum_of_squares = 0;
-	for (int i = 0; i < N; i++) { sum_of_squares = scalars[i]*scalars[i]; }
+	for (int i = 0; i < N; i++) { sum_of_squares += scalars[i]*scalars[i]; }
 	return std::sqrt(sum_of_squares);
 }
 

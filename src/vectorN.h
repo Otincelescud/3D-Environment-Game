@@ -1,3 +1,6 @@
+#ifndef VectorN_h
+#define VectorN_h
+
 #include <array>
 #include <cmath>
 #include <stdexcept>
@@ -23,3 +26,5 @@ public:
 	float dot(const Vector<N>&) const;
 	float norm() const;
 };
+
+#endif /* VectorN_h */
