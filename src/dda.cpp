@@ -4,7 +4,7 @@ bool DDA::isBlockInBounds(float bX, float bY, int w, int h) { return bX >= 0 && 
 
 bool DDA::checkBlock(float bX, float bY, std::vector<std::vector<unsigned char>>& world) {
     bool var = isBlockInBounds(bX, bY, world[0].size(), world.size());
-    if (var) world[bY][bX] = 2;
+    if (var && world[bY][bX]) return true;
     return false;
 }
 
@@ -285,5 +285,22 @@ DDA::rayCollision_t DDA::getCollisionDDAO3(float xs, float ys, float slope, std:
     }
 
     rayCollision.blockX = -1;
+    return rayCollision;
+}
+
+DDA::rayCollision_t DDA::getCollisionInfo(float xs, float ys, float xe, float ye, std::vector<std::vector<unsigned char>>& worldMap) {
+    float dX = xe - xs;
+    float dY = ye - ys;
+    rayCollision_t rayCollision;
+    if ((dX > 0 && dY >= 0 && dY <= dX)) rayCollision = getCollisionDDAO1(xs, ys, dY/dX, worldMap);
+    else if ((dX >= 0 && dY > 0 && dY > dX)) rayCollision = getCollisionDDAO2(xs, ys, dX/dY, worldMap);
+    else if (dX > 0 && dY < 0 && -dY <= dX) rayCollision = getCollisionDDAO8(xs, ys, dY/dX, worldMap);
+    else if (dX > 0 && dY < 0 && -dY > dX) rayCollision = getCollisionDDAO7(xs, ys, dX/dY, worldMap);
+    else if (dX < 0 && dY >= 0 && dY <= -dX) rayCollision = getCollisionDDAO4(xs, ys, dY/dX, worldMap);
+    else if (dX <= 0 && dY > 0 && dY >= -dX) rayCollision = getCollisionDDAO3(xs, ys, dX/dY, worldMap);
+    else if (dX < 0 && dY < 0 && dY >= dX) rayCollision = getCollisionDDAO5(xs, ys, dY/dX, worldMap);
+    else if (dX <= 0 && dY < 0 && dY < dX) rayCollision = getCollisionDDAO6(xs, ys, dX/dY, worldMap);
+    else rayCollision.blockX = -1;
+
     return rayCollision;
 }

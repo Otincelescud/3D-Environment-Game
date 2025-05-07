@@ -24,7 +24,8 @@ private:
     std::vector<std::vector<unsigned char>> worldMap;
     Vector<3> CameraPosition;
     Vector<3> CameraRotation;
-    Graphics graphicsHandler;
+    Camera cam;
+    Graphics_handler graphicsHandler;
 };
 
 #endif /* Game_h */
