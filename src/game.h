@@ -22,10 +22,8 @@ private:
     SDL_Window* win;
     SDL_Surface* winSurface;
     std::vector<std::vector<unsigned char>> worldMap;
-    Vector<3> CameraPosition;
-    Vector<3> CameraRotation;
     Camera cam;
-    Graphics_handler graphicsHandler;
+    GraphicsHandler graphicsHandler;
 };
 
 #endif /* Game_h */

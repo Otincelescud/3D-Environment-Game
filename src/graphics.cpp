@@ -1,11 +1,42 @@
 #include "graphics.h"
 
-void Graphics_handler::init(Camera* cam_ptr, std::vector<std::vector<unsigned char>> map_matrix) {
+void GraphicsHandler::set_pixel(SDL_Surface *surface, int x, int y, Uint32 color) {
+    int bpp = surface->format->BytesPerPixel;
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch (bpp) {
+        case 1:
+            *p = color;
+            break;
+
+        case 2:
+            *(Uint16 *)p = color;
+            break;
+
+        case 3:
+            if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+                p[0] = (color >> 16) & 0xFF;
+                p[1] = (color >> 8) & 0xFF;
+                p[2] = color & 0xFF;
+            } else {
+                p[0] = color & 0xFF;
+                p[1] = (color >> 8) & 0xFF;
+                p[2] = (color >> 16) & 0xFF;
+            }
+            break;
+
+        case 4:
+            *(Uint32 *)p = color;
+            break;
+    }
+}
+
+void GraphicsHandler::init(Camera* cam_ptr, std::vector<std::vector<unsigned char>>& map_matrix) {
     cam = cam_ptr;
     map = map_matrix;
 }
 
-void Graphics_handler::render(SDL_Surface* winSurface) {
+void GraphicsHandler::render() {
     for (int i = 0; i < cam->px_w; i++) {
         for (int j = 0; j < cam->px_h; j++) {
             Vector<3> ray_vector;
@@ -16,7 +47,10 @@ void Graphics_handler::render(SDL_Surface* winSurface) {
             ray_vector = ray_vector/ray_vector.norm();
 
             DDA::rayCollision_t px_info = DDA::getCollisionInfo(cam->pos_x, cam->pos_y, cam->pos_x + cos(cam->rly)*cos(cam->rlz)*ray_vector[0] + -sin(cam->rlz)*ray_vector[1] + -sin(cam->rly)*cos(cam->rlz)*ray_vector[2], cos(cam->rly)*sin(cam->rlz)*ray_vector[0] + cos(cam->rlz)*ray_vector[1] + -sin(cam->rly)*sin(cam->rlz)*ray_vector[2], map);
-            // color pixel
+            if (px_info.blockX != -1 && map[px_info.blockY][px_info.blockX] == 1) {
+                Uint32 color = SDL_MapRGB(cam->winSurface->format, 255, 0, 0);  // Red
+                set_pixel(cam->winSurface, i, j, color);
+            }
         }
     }
 }

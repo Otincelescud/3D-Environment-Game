@@ -14,9 +14,22 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     winSurface = SDL_GetWindowSurface(win);
     if (!winSurface) { std::cerr << "Can't Get Window Surface: " << SDL_GetError() << '\n'; return; }
 
-    cam.px_w = 
+    cam.px_w = width;
+    cam.px_h = height;
+    cam.cam_w = 36;
+    cam.cam_h = 24;
+    cam.focal_length = 50;
+    cam.pos_x = 0; cam.pos_y = 0;
+    cam.rly = 0; cam.rlz = 0;
+    cam.winSurface = winSurface;
 
-	//graphicsHandler.init(winSurface, 8, 100, &CameraPosition, &CameraRotation);
+    worldMap = {
+        {0, 0, 1},
+        {0, 1, 0},
+        {0, 0, 0}
+    };
+
+	graphicsHandler.init(&cam, worldMap);
 
     running = true;
 }
@@ -48,7 +61,7 @@ void Game::update() {
 }
 
 void Game::render() {
-	//graphicsHandler.render();
+	graphicsHandler.render();
     SDL_UpdateWindowSurface( win );
 }
 
