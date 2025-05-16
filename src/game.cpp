@@ -18,15 +18,27 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     cam.px_h = height;
     cam.cam_w = 36;
     cam.cam_h = 24;
-    cam.focal_length = 50;
+    cam.focal_length = 20;
     cam.pos_x = 0; cam.pos_y = 0;
     cam.rly = 0; cam.rlz = 0;
     cam.winSurface = winSurface;
 
     worldMap = {
-        {0, 0, 1},
-        {0, 1, 0},
-        {0, 0, 0}
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
 
 	graphicsHandler.init(&cam, worldMap);
@@ -47,6 +59,34 @@ void Game::handleEvents() {
             switch (e.key.keysym.sym) {
             case SDLK_ESCAPE:
                 running = false;
+                break;
+            case SDLK_a:
+                cam.pos_x += 1*sin(cam.rlz);
+                cam.pos_y -= 1*cos(cam.rlz);
+                break;
+            case SDLK_d:
+                cam.pos_x -= 1*sin(cam.rlz);
+                cam.pos_y += 1*cos(cam.rlz);
+                break;
+            case SDLK_w:
+                cam.pos_x += 1*cos(cam.rlz);
+                cam.pos_y += 1*sin(cam.rlz);
+                break;
+            case SDLK_s:
+                cam.pos_x -= 1*cos(cam.rlz);
+                cam.pos_y -= 1*sin(cam.rlz);
+                break;
+            case SDLK_RIGHT:
+                cam.rlz += 0.2;
+                break;
+            case SDLK_LEFT:
+                cam.rlz -= 0.2;
+                break;
+            case SDLK_UP:
+                cam.rly += 0.2;
+                break;
+            case SDLK_DOWN:
+                cam.rly -= 0.2;
                 break;
             }
             break;
