@@ -61,20 +61,20 @@ void Game::handleEvents() {
                 running = false;
                 break;
             case SDLK_a:
-                cam.pos_x += 1*sin(cam.rlz);
-                cam.pos_y -= 1*cos(cam.rlz);
+                cam.pos_x += 0.5*sin(cam.rlz);
+                cam.pos_y -= 0.5*cos(cam.rlz);
                 break;
             case SDLK_d:
-                cam.pos_x -= 1*sin(cam.rlz);
-                cam.pos_y += 1*cos(cam.rlz);
+                cam.pos_x -= 0.5*sin(cam.rlz);
+                cam.pos_y += 0.5*cos(cam.rlz);
                 break;
             case SDLK_w:
-                cam.pos_x += 1*cos(cam.rlz);
-                cam.pos_y += 1*sin(cam.rlz);
+                cam.pos_x += 0.5*cos(cam.rlz);
+                cam.pos_y += 0.5*sin(cam.rlz);
                 break;
             case SDLK_s:
-                cam.pos_x -= 1*cos(cam.rlz);
-                cam.pos_y -= 1*sin(cam.rlz);
+                cam.pos_x -= 0.5*cos(cam.rlz);
+                cam.pos_y -= 0.5*sin(cam.rlz);
                 break;
             case SDLK_RIGHT:
                 cam.rlz += 0.2;

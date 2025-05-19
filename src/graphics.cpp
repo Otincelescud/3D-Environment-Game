@@ -46,23 +46,36 @@ void GraphicsHandler::render() {
 
             ray_vector = ray_vector/ray_vector.norm();
 
-            DDA::rayCollision_t px_info = DDA::getCollisionInfo(cam->pos_x, cam->pos_y, cam->pos_x + cos(cam->rly)*cos(cam->rlz)*ray_vector[0] + -sin(cam->rlz)*ray_vector[1] + -sin(cam->rly)*cos(cam->rlz)*ray_vector[2], cam->pos_y + cos(cam->rly)*sin(cam->rlz)*ray_vector[0] + cos(cam->rlz)*ray_vector[1] + -sin(cam->rly)*sin(cam->rlz)*ray_vector[2], map);
+            Vector<3> rotated_ray_vector;
+            rotated_ray_vector[0] = cos(cam->rly)*cos(cam->rlz)*ray_vector[0] + -sin(cam->rlz)*ray_vector[1] + -sin(cam->rly)*cos(cam->rlz)*ray_vector[2];
+            rotated_ray_vector[1] = cos(cam->rly)*sin(cam->rlz)*ray_vector[0] + cos(cam->rlz)*ray_vector[1] + -sin(cam->rly)*sin(cam->rlz)*ray_vector[2];
+            rotated_ray_vector[2] = sin(cam->rly)*ray_vector[0] + cos(cam->rly)*ray_vector[2];
+
+
+            DDA::rayCollision_t px_info = DDA::getCollisionInfo(cam->pos_x, cam->pos_y, cam->pos_x + rotated_ray_vector[0], cam->pos_y + rotated_ray_vector[1], map);
             Uint32 color = SDL_MapRGB(cam->winSurface->format, 255, 0, 0);
             set_pixel(cam->winSurface, i, j, color);
-            if (px_info.blockX != -1 && map[px_info.blockY][px_info.blockX] == 1) {
+
+            //compute with x too i guess
+            float z_coord = rotated_ray_vector[2]*(px_info.colOnWallFaceY - cam->pos_y)/rotated_ray_vector[1];
+            /*if (z_coord > -1.5 && z_coord < 3) {
+
+            }*/
+            if (px_info.blockX != -1 &&  z_coord > -1.5 && z_coord < 3 && map[px_info.blockY][px_info.blockX] == 1) {
                 Uint32 color = SDL_MapRGB(cam->winSurface->format, 255, 0, 0);
                 if (px_info.CollisionType % 2 == 1 && int(trunc(px_info.colOnWallFaceX*4))%2 == 0) color = SDL_MapRGB(cam->winSurface->format, 255, 255, 0);
                 if (px_info.CollisionType % 2 == 0 && int(trunc(px_info.colOnWallFaceY*4))%2 == 0) color = SDL_MapRGB(cam->winSurface->format, 255, 255, 0);
                 set_pixel(cam->winSurface, i, j, color);
             }
-            else if (px_info.blockX != -1 && map[px_info.blockY][px_info.blockX] == 2) {
+            else if (px_info.blockX != -1 && z_coord > -1.5 && z_coord < 3 && map[px_info.blockY][px_info.blockX] == 2) {
                 Uint32 color = SDL_MapRGB(cam->winSurface->format, 0, 255, 0);
                 if (px_info.CollisionType % 2 == 1 && int(trunc(px_info.colOnWallFaceX*4))%2 == 0) color = SDL_MapRGB(cam->winSurface->format, 0, 255, 255);
                 if (px_info.CollisionType % 2 == 0 && int(trunc(px_info.colOnWallFaceY*4))%2 == 0) color = SDL_MapRGB(cam->winSurface->format, 0, 255, 255);
                 set_pixel(cam->winSurface, i, j, color);
             }
             else {
-                Uint32 color = SDL_MapRGB(cam->winSurface->format, 0, 0, 0);
+                if (rotated_ray_vector[2] >= 0) color = SDL_MapRGB(cam->winSurface->format, 75, 10, 5);
+                else color = SDL_MapRGB(cam->winSurface->format, 100, 100, 100);
                 set_pixel(cam->winSurface, i, j, color);
             }
         }
