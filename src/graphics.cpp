@@ -56,8 +56,9 @@ void GraphicsHandler::render() {
             Uint32 color = SDL_MapRGB(cam->winSurface->format, 255, 0, 0);
             set_pixel(cam->winSurface, i, j, color);
 
-            //compute with x too i guess
-            float z_coord = rotated_ray_vector[2]*(px_info.colOnWallFaceY - cam->pos_y)/rotated_ray_vector[1];
+            float z_coord;
+            if (rotated_ray_vector[0] == 0) z_coord = rotated_ray_vector[2]*(px_info.colOnWallFaceY - cam->pos_y)/rotated_ray_vector[1];
+            else z_coord = rotated_ray_vector[2]*(px_info.colOnWallFaceX - cam->pos_x)/rotated_ray_vector[0];
             /*if (z_coord > -1.5 && z_coord < 3) {
 
             }*/
