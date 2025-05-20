@@ -24,6 +24,7 @@ private:
     std::vector<std::vector<unsigned char>> worldMap;
     Camera cam;
     GraphicsHandler graphicsHandler;
+    int world_height;
 };
 
 #endif /* Game_h */

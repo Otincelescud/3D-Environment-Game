@@ -14,6 +14,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     winSurface = SDL_GetWindowSurface(win);
     if (!winSurface) { std::cerr << "Can't Get Window Surface: " << SDL_GetError() << '\n'; return; }
 
+    world_height = 4.5;
+
     cam.px_w = width;
     cam.px_h = height;
     cam.cam_w = 36;
@@ -41,7 +43,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     };
 
-	graphicsHandler.init(&cam, worldMap);
+	graphicsHandler.init(&cam, worldMap, world_height);
 
     running = true;
 }
